@@ -4,61 +4,33 @@ import { Breadcrumb, BreadcrumbItem,
 import { Control, Form, Errors, actions } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 
-
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
+
 class Contact extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            firstname: '',
-            lastname: '',
-            telnum: '',
-            email: '',
-            agree: false,
-            contactType: 'Tel.',
-            message: '',
-            touched: {
-                firstname: false,
-                lastname: false,
-                telnum: false,
-                email: false
-            }
-        }
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
+
     }
 
-    handleBlur = (field) => (evt) => {
-        this.setState({
-            touched: { ...this.state.touched, [field]: true }
-        });
-    }
-
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        this.setState({
-            [name]: value
-        });
-    }
 
     handleSubmit(values) {
         console.log('Current State is: ' + JSON.stringify(values));
-        //alert('Current State is: ' + JSON.stringify(values));
+        alert('Current State is: ' + JSON.stringify(values));
         this.props.resetFeedbackForm();
+
+
+        this.props.postFeedback(values.firstname,values.lastname,values.telnum,values.email,values.agree,values.contactType,values.message,values.id);
+
+
         // event.preventDefault();
     }
-
 
     render() {
         return (
@@ -102,7 +74,6 @@ class Contact extends Component {
                         </div>
                     </div>
                 </div>
-
                 <div className="row row-content">
                     <div className="col-12">
                         <h3>Send us your Feedback</h3>
@@ -130,7 +101,7 @@ class Contact extends Component {
                                         }}
                                     />
                                 </Col>
-                            </Row><br/>
+                            </Row>
                             <Row className="form-group">
                                 <Label htmlFor="lastname" md={2}>Last Name</Label>
                                 <Col md={10}>
@@ -152,7 +123,7 @@ class Contact extends Component {
                                         }}
                                     />
                                 </Col>
-                            </Row><br/>
+                            </Row>
                             <Row className="form-group">
                                 <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>
@@ -175,7 +146,7 @@ class Contact extends Component {
                                         }}
                                     />
                                 </Col>
-                            </Row><br/>
+                            </Row>
                             <Row className="form-group">
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>
@@ -197,7 +168,6 @@ class Contact extends Component {
                                     />
                                 </Col>
                             </Row>
-                            <br/>
                             <Row className="form-group">
                                 <Col md={{size: 6, offset: 2}}>
                                     <div className="form-check">
@@ -216,7 +186,7 @@ class Contact extends Component {
                                         <option>Email</option>
                                     </Control.select>
                                 </Col>
-                            </Row><br/>
+                            </Row>
                             <Row className="form-group">
                                 <Label htmlFor="message" md={2}>Your Feedback</Label>
                                 <Col md={10}>
@@ -224,7 +194,7 @@ class Contact extends Component {
                                                       rows="12"
                                                       className="form-control" />
                                 </Col>
-                            </Row><br/>
+                            </Row>
                             <Row className="form-group">
                                 <Col md={{size:10, offset: 2}}>
                                     <Button type="submit" color="primary">
@@ -235,12 +205,8 @@ class Contact extends Component {
                         </Form>
                     </div>
                 </div>
-
             </div>
-
-
         );
     }
 }
-
 export default Contact;
